@@ -1,7 +1,7 @@
 {
   "name": "print-splitter",
   "version": "1.0.0",
-  "description": "",
+  "description": "Splits up a DOM node into a set of pages for printing",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,5 +13,17 @@
     "crel": "^3.1.0",
     "tape": "^4.8.0",
     "watchify": "^3.9.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoryNunn/print-splitter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KoryNunn/print-splitter/issues"
+  },
+  "homepage": "https://github.com/KoryNunn/print-splitter#readme"
 }
