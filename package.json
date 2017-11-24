@@ -1,6 +1,6 @@
 {
   "name": "print-splitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Splits up a DOM node into a set of pages for printing",
   "main": "index.js",
   "scripts": {
