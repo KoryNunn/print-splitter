@@ -2,6 +2,10 @@
 
 Splits up a DOM node into a set of pages for printing
 
+# Example
+
+[https://korynunn.github.io/print-splitter/test/](https://korynunn.github.io/print-splitter/test/)
+
 # Why
 
 Printing DOM Sucks, page breaks don't work half the time
