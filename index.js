@@ -6,6 +6,10 @@ function printify(target, height, minSplitHeight, nextSplitParent, lastPageOffse
     var rect = target.getBoundingClientRect();
 
     if(rect.top < pageBottom && rect.bottom > pageBottom){
+        var targetStyle = window.getComputedStyle(target);
+        var parentPaddingBottom = parseInt(targetStyle['padding-bottom']);
+        var innerHeight = height - parentPaddingBottom;
+        var targetPageBottom = pageBottom - parentPaddingBottom;
         var clone = target.cloneNode();
         if(nextSplitParent){
             nextSplitParent.insertBefore(clone, nextSplitParent.firstChild);
@@ -31,21 +35,21 @@ function printify(target, height, minSplitHeight, nextSplitParent, lastPageOffse
         }, []);
 
         var offPageChildRects = childRects.filter(function(childRectInfo){
-            return childRectInfo[1].bottom > pageBottom;
+            return childRectInfo[1].bottom > targetPageBottom;
         });
 
         var [ splitPageChildRects, nextPageChildRects ] = offPageChildRects.reduce(function(pages, childRectInfo){
             if(
                 childRectInfo[0].nodeType === 3 &&
                 childRectInfo[1].height > minSplitHeight &&
-                childRectInfo[1].top < pageBottom
+                childRectInfo[1].top < targetPageBottom
             ){
                 var childTextNode = childRectInfo[0];
                 var textNodeClone = childTextNode.cloneNode(true);
                 childTextNode.parentElement.insertBefore(textWrapper, childTextNode);
                 textWrapper.appendChild(textNodeClone);
 
-                while(textNodeClone.textContent.length && textWrapper.getBoundingClientRect().bottom > pageBottom){
+                while(textNodeClone.textContent.length && textWrapper.getBoundingClientRect().bottom > targetPageBottom){
                     textNodeClone.textContent = textNodeClone.textContent.slice(0, -1);
                 }
 
@@ -63,7 +67,7 @@ function printify(target, height, minSplitHeight, nextSplitParent, lastPageOffse
             if(
                 childRectInfo[1].height <= minSplitHeight ||
                 !childRectInfo[0].hasChildNodes() && childRectInfo[1].height < height ||
-                childRectInfo[1].top > pageBottom
+                childRectInfo[1].top > targetPageBottom
             ){
                 pages[1].push(childRectInfo);
             } else {
@@ -78,7 +82,7 @@ function printify(target, height, minSplitHeight, nextSplitParent, lastPageOffse
         });
 
         splitPageChildRects.forEach(function(childRectInfo){
-            printify(childRectInfo[0], height, minSplitHeight, clone, lastPageOffset);
+            printify(childRectInfo[0], innerHeight, minSplitHeight, clone, lastPageOffset);
         });
 
         if(!nextSplitParent){
