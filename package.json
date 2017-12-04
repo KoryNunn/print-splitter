@@ -1,6 +1,6 @@
 {
   "name": "print-splitter",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Splits up a DOM node into a set of pages for printing",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,9 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "righto": "^3.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KoryNunn/print-splitter.git"

@@ -9,7 +9,6 @@
     }
     body{
       text-align: center;
-      background: hsl(210, 7%, 70%);
     }
 
     @media print{
@@ -22,20 +21,74 @@
       }
     }
 
-    .page{
+    button{
+      border: solid 2px black;
+      font-size: 1.5em;
+      background: rgb(200,100,0);
+      padding: 10px;
+      margin: 10px;
+    }
+
+    [isPrintSplitClone].page{
       text-align: left;
-      box-shadow: 5px 20px 45px -5px rgba(0,0,0,0.7), inset -5px -20px 200px rgba(0,0,0,0.2);
+      box-shadow: 5px 20px 45px -5px rgba(0,0,0,0.7);
       border-radius: 1px;
       page-break-inside: avoid;
-      padding: 20px;
+      padding: 40px;
       margin: 20px auto;
       background: white;
+    }
+
+    .columns{
+      display: flex;
+      flex-direction: row;
+    }
+
+    .columns > *{
+      width: 50%;
+    }
+
+    .printWrapper{
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      overflow-y: scroll;
+      transform: rotateZ(0);
+    }
+
+    @media print{
+      body > * {
+        display: none;
+      }
+
+      [isPrintSplitClone].page{
+        box-shadow: none;
+      }
+
+      body > .printWrapper{
+        display: block;
+        position: static;
+        background: none;
+        overflow: visible;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        right: auto;
+      }
+
+      .printWrapper > button{
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
 <h1>print-splitter</h1>
 <h2>Splits up a DOM node into a set of pages for printing</h2>
+<button class="print">Print</button>
 <div class="page">
 <h1>Lorem ipsum dolor sit amet consectetuer adipiscing
 elit</h1>
@@ -150,6 +203,172 @@ elit. Aenean commodo ligula eget dolor. Aenean massa.
 Cum sociis natoque penatibus et magnis dis parturient
 montes, nascetur ridiculus mus. Donec quam felis,
 ultricies nec, pellentesque eu, pretium quis, sem.</p>
+<div class="columns">
+  <div class="column-a">
+    <p class="column-a">aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.
+  aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
+  aaaa. aaaaaa aaaaaaa aaaaaa aaaa aaaaa. aaaaaa aaaaa.
+  aaa aaaaaa aaaaaaa aaaaaaaaa aa aaaaaa aaa aaaaaaaaaa
+  aaaaaa, aaaaaaaa aaaaaaaaa aaa. aaaaa aaaa aaaaa,
+  aaaaaaaaa aaa, aaaaaaaaaaaa aa, aaaaaaa aaaa, aaa.</p>
+</div>
+  <div class="column-b">
+    <p class="column-b">bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.
+  bbbbb bbbbb bbbbb bbb bbbb, bbbbbbbbbbbb bbbbbbbbbb
+  bbbb. bbbbbb bbbbbbb bbbbbb bbbb bbbbb. bbbbbb bbbbb.
+  bbb bbbbbb bbbbbbb bbbbbbbbb bb bbbbbb bbb bbbbbbbbbb
+  bbbbbb, bbbbbbbb bbbbbbbbb bbb. bbbbb bbbb bbbbb,
+  bbbbbbbbb bbb, bbbbbbbbbbbb bb, bbbbbbb bbbb, bbb.</p>
+</div>
+</div>
 <table class="data">
 </table>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
