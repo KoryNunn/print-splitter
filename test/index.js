@@ -17,10 +17,22 @@ window.addEventListener('load', function(){
 
     document.querySelector('.data').appendChild(rows);
 
-    setTimeout(function(){
+    function print(){
         var pageElement = document.querySelector('.page');
         pageElement.style.width = '778px';
 
-        splitter(pageElement, 1102, 200);
-    }, 1000);
+        var pages = splitter(pageElement, 1082, 200);
+        var exitPrintViewButton = crel('button', { class: 'exitPrintView' }, 'Close print view');
+        var printWrapper = crel('div', { class: 'printWrapper' }, exitPrintViewButton, pages);
+        crel(document.body, printWrapper);
+        pageElement.style.width = null;
+
+        function exitPrintView(){
+            printWrapper.remove();
+        }
+
+        exitPrintViewButton.addEventListener('click', exitPrintView);
+    }
+
+    document.querySelector('button.print').addEventListener('click', print);
 });

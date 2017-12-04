@@ -17,7 +17,9 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "righto": "^3.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KoryNunn/print-splitter.git"
