@@ -21,7 +21,9 @@ window.addEventListener('load', function(){
         var pageElement = document.querySelector('.page');
         pageElement.style.width = '778px';
 
-        var pages = splitter(pageElement, 1082, 200);
+        var pages = splitter(pageElement, 1082, 200, {
+            shouldPageBrake: element => (element.getAttribute('pageBreak') || '').split(' ')
+        });
         var exitPrintViewButton = crel('button', { class: 'exitPrintView' }, 'Close print view');
         var printWrapper = crel('div', { class: 'printWrapper' }, exitPrintViewButton, pages);
         crel(document.body, printWrapper);

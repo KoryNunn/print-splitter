@@ -24,7 +24,20 @@ https://korynunn.github.io/print-splitter/test/
     var pageHeight = 1102; // "paper" height, 1082px is around A4 height.
     var minimumSplitHight = 200; // Don't split elements smaller than 200px, push them to the next page.
 
-    var pages = splitter(document.querySelector('.page'), pageHeight, minimumSplitHight);
+    // Function to detect elements that should cause a page-break
+    // Return an array of optionally `['before', 'after']`
+    var shouldPageBrake = function(element){
+        return (element.getAttribute('pageBreak') || '').split(' ');
+    };
+
+    var pages = splitter(
+        document.querySelector('.page'),
+        pageHeight,
+        minimumSplitHight,
+        {
+            shouldPageBrake: shouldPageBrake
+        }
+    );
 
     // `pages` will be in the DOM before the targeted node.
 

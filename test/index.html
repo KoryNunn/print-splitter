@@ -59,6 +59,11 @@
       transform: rotateZ(0);
     }
 
+    [pageBreak]{
+      border: solid 1px black;
+      padding: 20px;
+    }
+
     @media print{
       body > * {
         display: none;
@@ -198,11 +203,17 @@ mind?"></textarea>
 
   </fieldset>
 </form>
+<div pageBreak="before">
+  This region should have a page-break before it
+</div>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
 elit. Aenean commodo ligula eget dolor. Aenean massa.
 Cum sociis natoque penatibus et magnis dis parturient
 montes, nascetur ridiculus mus. Donec quam felis,
 ultricies nec, pellentesque eu, pretium quis, sem.</p>
+<div pageBreak="after">
+  This region should have a page-break after it
+</div>
 <div class="columns">
   <div class="column-a">
     <p class="column-a">aaaaa aaaaa aaaaa aaa aaaa, aaaaaaaaaaaa aaaaaaaaaa
@@ -371,6 +382,9 @@ ultricies nec, pellentesque eu, pretium quis, sem.</p>
 </div>
 <table class="data">
 </table>
+<div pageBreak="before after">
+  This region should have a page-break before and after it
+</div>
 <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
 elit. Aenean commodo ligula eget dolor. Aenean massa.
 Cum sociis natoque penatibus et magnis dis parturient
