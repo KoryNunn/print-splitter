@@ -56,8 +56,76 @@ function createPrintClone(element, deep){
     return clone;
 }
 
-function printify(target, rect, height, minSplitHeight, nextSplitParent, lastPageOffset){
+function clearPageBrakeMargins(element){
+    if(element.nodeType !== 1){
+        return;
+    }
+
+    if(element.hasAttribute('isPrintSplitBreakBefore')){
+        element.style.marginTop = JSON.parse(element.getAttribute('isPrintSplitBreakBefore'));
+        element.removeAttribute('isPrintSplitBreakBefore');
+    }
+    if(element.hasAttribute('isPrintSplitBreakAfter')){
+        element.style.marginBottom = JSON.parse(element.getAttribute('isPrintSplitBreakAfter'));
+        element.removeAttribute('isPrintSplitBreakAfter');
+    }
+}
+
+function getAdjacentPageElement(parentPage, element, direction){
+    var adjacentProperty = direction === 'previous' ? 'previousElementSibling' : 'nextElementSibling';
+    while (element !== parentPage){
+        if(element[adjacentProperty]){
+            return element[adjacentProperty];
+        }
+
+        element = element.parentElement;
+    }
+}
+
+function printify(parentPage, target, rect, height, minSplitHeight, nextSplitParent, lastPageOffset, options){
     var pageBottom = height + lastPageOffset;
+
+    var needsNewRect;
+
+    var childRects = Array.prototype.forEach.call(target.childNodes, function(child){
+        if(child.nodeType === 1 && options.shouldPageBrake){
+            var targetStyle = window.getComputedStyle(target);
+            var parentPaddingBottom = parseInt(targetStyle['padding-bottom']);
+            var isPrintSplitBreakBefore = child.hasAttribute('isPrintSplitBreakBefore');
+
+            if(isPrintSplitBreakBefore){
+                child.style.marginTop = JSON.parse(child.getAttribute('isPrintSplitBreakBefore'));
+            }
+
+            var breakSide = options.shouldPageBrake(child);
+            var childRect = getRect(child);
+
+            if(breakSide && childRect.top < rect.bottom && childRect.top < pageBottom){
+                if(
+                    !isPrintSplitBreakBefore &&
+                    ~breakSide.indexOf('before') &&
+                    getAdjacentPageElement(parentPage, child, 'previous')
+                ){
+                    var margin = height - (childRect.top - rect.top);
+                    child.setAttribute('isPrintSplitBreakBefore', JSON.stringify(child.style.marginTop));
+                    child.style.marginTop = margin + 'px';
+                    needsNewRect = true;
+                } else if(
+                    ~breakSide.indexOf('after') &&
+                    getAdjacentPageElement(parentPage, child, 'next')
+                ){
+                    var margin = height;
+                    child.setAttribute('isPrintSplitBreakAfter', JSON.stringify(child.style.marginBottom));
+                    child.style.marginBottom = margin + 'px';
+                    needsNewRect = true;
+                }
+            }
+        }
+    }, []);
+
+    if(needsNewRect){
+        rect = getRect(target);
+    }
 
     if(rect.top < pageBottom && rect.bottom > pageBottom){
         var targetStyle = window.getComputedStyle(target);
@@ -66,6 +134,7 @@ function printify(target, rect, height, minSplitHeight, nextSplitParent, lastPag
         var targetPageBottom = pageBottom - parentPaddingBottom;
         var clone = createPrintClone(target);
 
+        // Get child locations
         var childRects = Array.prototype.reduce.call(target.childNodes, function(results, child){
             var nodeRect = getRect(child);
 
@@ -76,10 +145,15 @@ function printify(target, rect, height, minSplitHeight, nextSplitParent, lastPag
             return results;
         }, []);
 
+        // Cleanup page brake children
+        childRects.forEach(childRectInfo => clearPageBrakeMargins(childRectInfo[0]));
+
+        // Get children that overflow the page
         var offPageChildRects = childRects.filter(function(childRectInfo){
             return childRectInfo[1].bottom > targetPageBottom;
         });
 
+        // Distinguish between children completely off the page, and partially across the page
         var [ splitPageChildRects, nextPageChildRects ] = offPageChildRects.reduce(function(pages, childRectInfo){
             if(
                 childRectInfo[0].nodeType === 3 &&
@@ -129,14 +203,14 @@ function printify(target, rect, height, minSplitHeight, nextSplitParent, lastPag
         }
 
         splitPageChildRects.forEach(function(childRectInfo){
-            printify(childRectInfo[0], childRectInfo[1], innerHeight, minSplitHeight, clone, lastPageOffset);
+            printify(parentPage, childRectInfo[0], childRectInfo[1], innerHeight, minSplitHeight, clone, lastPageOffset, options);
         });
 
         if(!nextSplitParent){
             target.style.height = height + 'px';
             var rect = getRect(clone);
 
-            return [clone, rect, height, minSplitHeight, null, rect.top];
+            return [clone, clone, rect, height, minSplitHeight, null, rect.top, options];
         }
 
     } else {
@@ -146,7 +220,7 @@ function printify(target, rect, height, minSplitHeight, nextSplitParent, lastPag
     }
 }
 
-module.exports = function(target, height, minSplitHeight){
+module.exports = function(target, height, minSplitHeight, options){
     var cloneStyle = document.createElement('style');
     cloneStyle.textContent = '[isPrintSplitClone]{visibility:hidden;}';
     document.body.appendChild(cloneStyle);
@@ -157,7 +231,7 @@ module.exports = function(target, height, minSplitHeight){
     var rect = getRect(targetClone);
     var pages = [targetClone];
 
-    var next = [targetClone, rect, height, minSplitHeight, null, rect.top];
+    var next = [targetClone, targetClone, rect, height, minSplitHeight, null, rect.top, options];
 
     do {
         next = printify.apply(null, next);
@@ -165,6 +239,10 @@ module.exports = function(target, height, minSplitHeight){
             pages.push(next[0]);
         }
     } while(next);
+
+    Array.prototype.slice.apply(target.querySelectorAll('[isPrintSplitBreak]')).forEach(function(element){
+        clearPageBrakeMargins(element);
+    });
 
     targetClone.style.transform = null;
     cloneStyle.remove();
