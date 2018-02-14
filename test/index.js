@@ -4,6 +4,13 @@ var crel = require('crel');
 window.addEventListener('load', function(){
 
     var rows = document.createDocumentFragment();
+    var headerRow = crel('tr',
+        crel('th', 'cell 1 - header ', i),
+        crel('th', 'cell 2 - header'),
+        crel('th', 'cell 3 - header'),
+        crel('th', 'cell 4 - header')
+    );
+    rows.appendChild(headerRow);
 
     for(var i = 0; i < 200; i ++){
         var row = crel('tr',

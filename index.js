@@ -82,6 +82,34 @@ function getAdjacentPageElement(parentPage, element, direction){
     }
 }
 
+function fixTable(table){
+    if(table.getAttribute('isPrintSplitFixed')){
+        return;
+    }
+
+    table.setAttribute('isPrintSplitFixed', 'true');
+
+    var rows = Array.prototype.slice.call(table.querySelectorAll('tr'));
+
+    if(!rows.length){
+        return;
+    }
+
+    var columnWidths = Array.prototype.map.call(rows[0].querySelectorAll('td, th'), function(cell){
+        return cell.getBoundingClientRect().width + 10;
+    });
+
+    var tableWidth = columnWidths.reduce((a, b) => a + b);
+    table.style['table-layout'] = 'fixed';
+    table.style['width'] = tableWidth + 'px';
+
+    Array.prototype.forEach.call(rows, function(row){
+        Array.prototype.forEach.call(row.querySelectorAll('td, th'), function(cell, index){
+            cell.style['width'] = (100 / tableWidth * columnWidths[index]) + '%';
+        });
+    });
+}
+
 function printify(parentPage, target, rect, height, minSplitHeight, nextSplitParent, lastPageOffset, options){
     var pageBottom = height + lastPageOffset;
 
@@ -132,6 +160,11 @@ function printify(parentPage, target, rect, height, minSplitHeight, nextSplitPar
         var parentPaddingBottom = parseInt(targetStyle['padding-bottom']);
         var innerHeight = height - parentPaddingBottom;
         var targetPageBottom = pageBottom - parentPaddingBottom;
+
+        if(target.nodeName === 'TABLE'){
+            fixTable(target);
+        }
+
         var clone = createPrintClone(target);
 
         // Get child locations
